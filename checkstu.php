@@ -354,9 +354,19 @@ if (($_SESSION['id']) == true) {
                         $row = mysqli_fetch_assoc($result);
 
                         ?>
-                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;">
+                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;margin-right:2vw">
                             <img src="<?php echo $row['img'] ?>" alt="Faculty Profile Image" style="width:50px;height:50px;border-radius:50%">
                         </button>
+                        <form action="" method="post">
+
+                            <input type="submit" name="logout" value="Logout" class="btn btn-danger" style="background-color:red;position:absolute;right:3px;top:2.6vh;width:5vw;font-size:1vw;text-align:center;">
+                        </form>
+                        <?php
+                        if (isset($_POST['logout'])) {
+                            session_unset();
+                            echo "<script>window.open('faclogin.php','_self')</script>";
+                        }
+                        ?>
 
                         <div class="modal fade" id="studentProfileModal" tabindex="-1" role="dialog" aria-labelledby="studentProfileModalLabel" aria-hidden="true" data-backdrop="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -503,6 +513,7 @@ if (($_SESSION['id']) == true) {
 
                     <div class="contents">
                         <h1 style="text-align:center;margin:2vw 0;font-family:'times new roman';font-size:4vw;">Students</h1>
+                        <input type="text" class="form-control mb-3" id="searchInput" placeholder="Search...here" style="border:2px solid black;">
 
                         <div style="margin:2% 5%">
 

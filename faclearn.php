@@ -448,9 +448,19 @@ if (($_SESSION['id']) == true) {
                         $row = mysqli_fetch_assoc($result);
 
                         ?>
-                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;">
+                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;margin-right:2vw">
                             <img src="<?php echo $row['img'] ?>" alt="Faculty Profile Image" style="width:50px;height:50px;border-radius:50%">
                         </button>
+                        <form action="" method="post">
+
+                            <input type="submit" name="logout" value="Logout" class="btn btn-danger" style="background-color:red;position:absolute;right:3px;top:2.6vh;width:5vw;font-size:1vw;text-align:center;">
+                        </form>
+                        <?php
+                        if (isset($_POST['logout'])) {
+                            session_unset();
+                            echo "<script>window.open('faclogin.php','_self')</script>";
+                        }
+                        ?>
 
                         <div class="modal fade" id="studentProfileModal" tabindex="-1" role="dialog" aria-labelledby="studentProfileModalLabel" aria-hidden="true" data-backdrop="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -567,17 +577,15 @@ if (($_SESSION['id']) == true) {
                                         <form action="" method="post" enctype="multipart/form-data">
                                             <?php
                                             // Assuming you have established a database connection already
-                                            $query = "SELECT DISTINCT course FROM students";
+                                            $query = "SELECT DISTINCT course FROM students where course ='$course'";
                                             $result = mysqli_query($con, $query);
 
-                                            if (!$result) {
-                                                die("Database query failed.");
-                                            }
+
                                             ?>
 
                                             <div class="form-group">
                                                 <label for="courseSelect">Select Course:</label>
-                                                <select class="form-control" id="courseSelect" name="course">
+                                                <select class="form-control" id="courseSelect" name="course" required>
                                                     <?php
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                         $course = $row['course'];
@@ -589,7 +597,7 @@ if (($_SESSION['id']) == true) {
 
                                             <div class="form-group">
                                                 <label for="semesterSelect">Select Semester:</label>
-                                                <select class="form-control" id="semesterSelect" name="semester">
+                                                <select class="form-control" id="semesterSelect" name="semester" required>
                                                     <option value="">SELECT SEMESTER</option>
                                                     <option value="Sem1">Sem1</option>
                                                     <option value="Sem2">Sem2</option>
@@ -602,13 +610,13 @@ if (($_SESSION['id']) == true) {
 
                                             <div class="form-group">
                                                 <div class="custom-file">
-                                                    <input type="file" id="fileInput" name="file" class="custom-file-input">
+                                                    <input type="file" id="fileInput" name="file" class="custom-file-input" required>
                                                     <label class="custom-file-label" for="fileInput">Choose PDF file</label>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="fileName" name="name" placeholder="Enter File Name">
+                                                <input type="text" class="form-control" id="fileName" name="name" placeholder="Enter File Name" required>
                                             </div>
 
                                             <div class="form-group">
@@ -665,7 +673,7 @@ if (($_SESSION['id']) == true) {
 
 
                             <?php
-                            $sql = "select * from material";
+                            $sql = "select * from material where course = '$course'";
                             $result = mysqli_query($con, $sql);
                             while ($row = mysqli_fetch_array($result)) {
                             ?>

@@ -398,10 +398,19 @@ if (($_SESSION['id']) == true) {
                         $row = mysqli_fetch_assoc($result);
 
                         ?>
-                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;">
+                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;margin-right:2vw">
                             <img src="<?php echo $row['img'] ?>" alt="Faculty Profile Image" style="width:50px;height:50px;border-radius:50%">
                         </button>
+                        <form action="" method="post">
 
+                            <input type="submit" name="logout" value="Logout" class="btn btn-danger" style="background-color:red;position:absolute;right:3px;top:2.6vh;width:5vw;font-size:1vw;text-align:center;">
+                        </form>
+                        <?php
+                        if (isset($_POST['logout'])) {
+                            session_unset();
+                            echo "<script>window.open('faclogin.php','_self')</script>";
+                        }
+                        ?>
                         <div class="modal fade" id="studentProfileModal" tabindex="-1" role="dialog" aria-labelledby="studentProfileModalLabel" aria-hidden="true" data-backdrop="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -525,17 +534,7 @@ if (($_SESSION['id']) == true) {
                                             }
                                             ?>
 
-                                            <div class="form-group">
-                                                <label for="courseSelect">Select Course:</label>
-                                                <select class="form-control" id="courseSelect" name="course">
-                                                    <?php
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        $course = $row['course'];
-                                                        echo "<option value='$course'>$course</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+
 
 
                                             <div class="form-group">
@@ -546,7 +545,7 @@ if (($_SESSION['id']) == true) {
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="text" class="form-control" id="fileName" name="name" placeholder="Enter File Name">
+                                                <input type="text" class="form-control" id="fileName" name="name" placeholder="Enter File Name" required>
                                             </div>
 
                                             <div class="form-group">
@@ -580,11 +579,10 @@ if (($_SESSION['id']) == true) {
                                 move_uploaded_file($file_temp, $folder);
                             }
 
-                            $course = $_POST['course'];
                             $name = $_POST['name'];
                             $description = $_POST['desc'];
 
-                            $sql = "INSERT INTO notification VALUES ('$course','$name', '$folder','$description')";
+                            $sql = "INSERT INTO notification VALUES ('$name', '$folder','$description')";
                             $res = mysqli_query($con, $sql);
 
                             if ($res) {
@@ -625,12 +623,8 @@ if (($_SESSION['id']) == true) {
                                         <div class="details">
                                             <h5 style="font-size:1.7vw;"><?php echo $row['name'] ?></h5>
 
-                                            <p>
 
-                                                COURSE: <?php echo $row['course'] ?></p>
-                                            <p>
-
-                                                DESC: <?php echo $row['description'] ?></p>
+                                            DESC: <?php echo $row['description'] ?></p>
                                         </div>
 
                                         <div class="btn-group">
@@ -639,7 +633,7 @@ if (($_SESSION['id']) == true) {
 
                                             <form action="facnotdel.php" method="GET">
                                                 <input type="hidden" name="id" value="<?php echo $row['name'] ?>">
-                                                <button type="submit" name="delete" class="btn btn-danger">DELETE</button>
+
                                             </form>
                                         </div>
                                     </div>

@@ -113,14 +113,14 @@
                         <div class="card shadow-sm">
                             <div class="card-header bg-transparent text-center">
                                 <input type="file" name="image" value="<?php echo $row['img'] ?>" alt="">
-                                <h5 style="margin-top:10px">name:<input type="text" name="name" value="<?php echo $row['name'] ?>"></h3>
+                                <h5 style="margin-top:10px">name:<input type="text" name="name" value="<?php echo $row['name'] ?>" required></h3>
                                     <p>Vimal Tormal Poddar College</p>
                             </div>
                             <div class="card-body">
                                 <p><strong>Student ID:</strong><?php echo $row['student_id'] ?></p>
-                                <p><strong>Phone Number:</strong> <input type="text" name="phone" value="<?php echo $row['phno'] ?>"></p>
-                                <p><strong>Parents Phone:</strong><input type="text" name="pphone" value="<?php echo $row['pmno'] ?>"></p>
-                                <p><strong>Section:</strong> <input type="text" name="section" value="<?php echo $row['sec'] ?>"></p>
+                                <p><strong>Phone Number:</strong> <input type="text" name="phone" value="<?php echo $row['phno'] ?>" required></p>
+                                <p><strong>Parents Phone:</strong><input type="text" name="pphone" value="<?php echo $row['pmno'] ?>" required></p>
+                                <p><strong>Section:</strong> <input type="text" name="section" value="<?php echo $row['sec'] ?>" required></p>
                             </div>
                         </div>
                     </div>
@@ -140,12 +140,12 @@
                                     <tr>
                                         <th width="30%">Email</th>
                                         <td width="2%">:</td>
-                                        <td><input type="email" name="email" value="<?php echo $row['email'] ?>"></td>
+                                        <td><input type="email" name="email" value="<?php echo $row['email'] ?>" required></td>
                                     </tr>
                                     <tr>
                                         <th width="30%">Date Of Birth:</th>
                                         <td width="2%">:</td>
-                                        <td><input type="date" name="dob" value="<?php echo $row['dob'] ?>"></td>
+                                        <td><input type="date" name="dob" value="<?php echo $row['dob'] ?>" required></td>
                                     </tr>
 
 
@@ -153,7 +153,7 @@
                                     <tr>
                                         <th width="30%">Course</th>
                                         <td width="2%">:</td>
-                                        <td><select name="course" id="" value="<?php echo $row['course'] ?>">
+                                        <td><select name="course" id="" value="<?php echo $row['course'] ?>" required>
                                                 <option value="">Select Course</option>
                                                 <option value="BCA">BCA</option>
                                                 <option value="BCOM">BCOM</option>
@@ -202,13 +202,13 @@
                                     <tr>
                                         <th width="30%">Address</th>
                                         <td width="2%">:</td>
-                                        <td><textarea name="address" id="" cols="30" rows="10" value="<?php echo $row['address'] ?>"></textarea></td>
+                                        <td><textarea name="address" id="" cols="30" rows="10" value="<?php echo $row['address'] ?>" required></textarea></td>
 
                                     </tr>
 
                                 </table>
                                 <tr>
-                                    <input type="submit" class="btn btn-outline-success" name="update">
+                                    <input type="submit" class="btn btn-outline-success" name="update" required>
                                 </tr>
                             </div>
 

@@ -53,34 +53,11 @@ session_start();
 
 
     <nav class="site-nav mb-5">
-        <div class="pb-2 top-bar mb-3">
-            <div class="container">
-                <div class="row align-items-center">
 
-                    <div class="col-6 col-lg-9">
-                        <a href="#" class="small mr-3"><span class="icon-question-circle-o mr-2"></span> <span class="d-none d-lg-inline-block"></span></a>
-                        <a href="#" class="small mr-3"><span class="icon-phone mr-2"></span> <span class="d-none d-lg-inline-block"></span></a>
-                        <a href="#" class="small mr-3"><span class="icon-envelope mr-2"></span> <span class="d-none d-lg-inline-block"></span></a>
-                    </div>
-
-                    <div class="col-6 col-lg-3 text-right">
-                        <a href="login.html" class="small mr-3">
-                            <span class="icon-lock"></span>
-                            Log In
-                        </a>
-                        <a href="register.html" class="small">
-
-
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
         <div class="sticky-nav js-sticky-header">
             <div class="container position-relative">
                 <div class="site-navigation text-center">
-                    <a href="index.html" class="logo menu-absolute m-0">AcademicFlow<span class="text-primary">.</span></a>
+
 
 
                     </li>
@@ -132,10 +109,10 @@ session_start();
                     <form action="" method="post" class="form-box">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <input type="text" class="form-control" placeholder="FACULTY ID" name="facid">
+                                <input type="text" class="form-control" placeholder="FACULTY ID" name="facid" required>
                             </div>
                             <div class="col-12 mb-3">
-                                <input type="password" class="form-control" placeholder="Password" name="pass">
+                                <input type="password" class="form-control" placeholder="Password" name="pass" required>
                             </div>
 
 
@@ -159,12 +136,13 @@ session_start();
 
         $sql = "SELECT * FROM faculty WHERE fac_id='$facid' AND phone='$pass'";
         $result = mysqli_query($con, $sql);
+        $count = mysqli_num_rows($result);
         $row = mysqli_fetch_array($result);
         $name = $row['name'];
         $course = $row['dep'];
-        if ($result) {
+        if ($count > 0) {
             $_SESSION['course'] = $course;
-            $_SESSION['id']=$facid;
+            $_SESSION['id'] = $facid;
             echo "<script>alert(`Welcome $name`);</script>";
             echo "<script>window.open('fachome.php','_self');</script>";
         } else {

@@ -354,9 +354,19 @@ if (($_SESSION['id']) == true) {
             $row = mysqli_fetch_assoc($result);
 
             ?>
-            <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;">
+            <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;margin-right:2vw">
               <img src="<?php echo $row['img'] ?>" alt="Faculty Profile Image" style="width:50px;height:50px;border-radius:50%">
             </button>
+            <form action="" method="post">
+
+              <input type="submit" name="logout" value="Logout" class="btn btn-danger" style="background-color:red;position:absolute;right:3px;top:2.6vh;width:5vw;font-size:1vw;text-align:center;">
+            </form>
+            <?php
+            if (isset($_POST['logout'])) {
+              session_unset();
+              echo "<script>window.open('faclogin.php','_self')</script>";
+            }
+            ?>
 
             <div class="modal fade" id="studentProfileModal" tabindex="-1" role="dialog" aria-labelledby="studentProfileModalLabel" aria-hidden="true" data-backdrop="false">
               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -515,11 +525,11 @@ if (($_SESSION['id']) == true) {
                   <option value="Bcom">Bcom</option>
                   <option value="BBA">BBA</option>
                 </select><label for="Phone ">Phone Number:</label>
-                <input type="text" id="qualification" name="phno" placeholder="phone" required>
+                <input type="text" id="qualification" name="phno" placeholder="phone" pattern="[0-9]{1,10}" required>
               </div>
               <div class="form-row">
                 <label for="experience">Parents Mobile Number:</label>
-                <input type="number" id="experience" name="pmno" placeholder="parents phone number" required>
+                <input type="number" id="experience" name="pmno" placeholder="parents phone number" pattern="[0-9]{1,10}" required>
                 <label for="dob">Date of Birth:</label>
                 <input type="date" id="dob" name="dob" required>
               </div>

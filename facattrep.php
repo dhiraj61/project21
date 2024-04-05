@@ -334,7 +334,7 @@ if (($_SESSION['id']) == true) {
                 </div>
                 <div class="right">
                     <div class="text">
-                        <h6 class="text1">Home</h6>
+                        <h6 class="text1">Attendance Report</h6>
 
 
                     </div>
@@ -346,9 +346,19 @@ if (($_SESSION['id']) == true) {
                         $row = mysqli_fetch_assoc($result);
 
                         ?>
-                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;">
+                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;margin-right:2vw">
                             <img src="<?php echo $row['img'] ?>" alt="Faculty Profile Image" style="width:50px;height:50px;border-radius:50%">
                         </button>
+                        <form action="" method="post">
+
+                            <input type="submit" name="logout" value="Logout" class="btn btn-danger" style="background-color:red;position:absolute;right:3px;top:2.6vh;width:5vw;font-size:1vw;text-align:center;">
+                        </form>
+                        <?php
+                        if (isset($_POST['logout'])) {
+                            session_unset();
+                            echo "<script>window.open('faclogin.php','_self')</script>";
+                        }
+                        ?>
 
                         <div class="modal fade" id="studentProfileModal" tabindex="-1" role="dialog" aria-labelledby="studentProfileModalLabel" aria-hidden="true" data-backdrop="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -454,63 +464,224 @@ if (($_SESSION['id']) == true) {
                 </div>
                 <div class="content">
                     <div class="nav"></div>
-                    <?php
+                    <div class="contents" style="display:flex;">
+                        <div class="contleft" style="width:70%;height:100%;">
+                            <div style="width:100%;height:50%;">
 
-                    require('connection.php');
-                    $stu = "select COUNT(student_id) as count from students where course='$course' AND semester='Sem1'";
-                    $result = mysqli_query($con, $stu);
-                    $row = mysqli_fetch_array($result);
-                    $count = $row['count'];
 
-                    $fac_count = "select COUNT(student_id) as count from students where course='$course' AND semester='Sem2'";
-                    $result1 = mysqli_query($con, $fac_count);
-                    $row1 = mysqli_fetch_array($result1);
-                    $count1 = $row1['count'];
+                                <div class="frm2">
 
-                    $fycount = $count + $count1;
+                                    <h1 style="margin-bottom:3vw;margin-left:13vw;padding-top:3vw;"> ATTENDANCE REPORT</h1>
 
-                    $course1 = "select COUNT(student_id) as count from students where course='$course' AND semester='Sem3'";
-                    $result2 = mysqli_query($con, $course1);
-                    $row2 = mysqli_fetch_array($result2);
-                    $count2 = $row2['count'];
+                                    <div style="margin-left:3vw;">
+                                        <form method='post'>
+                                            <label for="">Course</label>
+                                            <select name="course" id="" class="">
+                                                <option value="BCA">BCA</option>
+                                                <option value="BCOM">BCOM</option>
+                                                <option value="BBA">BBA</option>
+                                            </select>
+                                            <label for="">Semester</label>
+                                            <select name="sem" id="" class="">
+                                                <option value="Sem1">Sem1</option>
+                                                <option value="Sem2">Sem2</option>
+                                                <option value="Sem3">Sem3</option>
+                                                <option value="Sem4">Sem4</option>
+                                                <option value="Sem5">Sem5</option>
+                                                <option value="Sem6">Sem6</option>
+                                            </select>
+                                            <label for="">Section</label>
+                                            <select name="section" id="" class="">
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                            </select>
+                                            <input type="submit" name="search" value="Search" class="btn btn-primary" style="margin-left:1vw;margin-bottom:.5vw;">
+                                        </form>
+                                    </div>
+                                </div>
 
-                    $stu1 = "select COUNT(student_id) as count from students where course='$course' AND semester='Sem4'";
-                    $result3 = mysqli_query($con, $stu1);
-                    $row3 = mysqli_fetch_array($result3);
-                    $count3 = $row3['count'];
 
-                    $sycount = $count2 + $count3;
 
-                    $fac_count1 = "select COUNT(student_id) as count from students where course='$course' AND semester='Sem5'";
-                    $result4 = mysqli_query($con, $fac_count1);
-                    $row4 = mysqli_fetch_array($result4);
-                    $count4 = $row4['count'];
 
-                    $course2 = "select COUNT(student_id) as count from students where course='$course' AND semester='Sem6'";
-                    $result5 = mysqli_query($con, $course2);
-                    $row5 = mysqli_fetch_array($result5);
-                    $count5 = $row5['count'];
 
-                    $tycount = $count4 + $count5;
-                    ?>
-                    <div class="cards" style="font-family: 'Times New Roman', Times, serif;">
-                        <div class="car"><i class="fa-solid fa-chalkboard-user" style="font-size: 4.5vw;position:absolute;top:25%;right:5%;"></i>
-                            <h4 style="font-size: 1.4vw;position:absolute;top:10%;margin-left: 1vw;color:white;">F.Y. Students</h4>
-                            <button class="btn btn-primary" style="font-size: 3vw;position:absolute;top:26%;margin-left: 5vw;color:white;border:none;background-color:transparent;"><?php echo $fycount ?></button>
+                            </div>
+                            <div class="atd" style="width:100%;height:50%;overflow-y:scroll;border-top:1px solid grey;">
+
+                                <div class="percentage" style="width:90%">
+                                    <table class="table table-sm table-hover " style="text-align:center;background-color:#dadada;margin-top:3vw;margin-left:2vw;;">
+                                        <thead>
+                                            <tr style="text-align:center;">
+                                                <th>Student Id</th>
+                                                <th>NAME</th>
+                                                <th>Section</th>
+                                                <th>Course</th>
+                                                <th>Semester</th>
+
+                                                <th>Date</th>
+                                                <th>ATTENDANCE</th>
+                                            </tr>
+                                        </thead>
+                                        <?php
+                                        $sql2 = "select DISTINCT (name) from attendence";
+                                        $result = mysqli_query($con, $sql2);
+                                        while ($row2 = mysqli_fetch_array($result)) {
+                                            $name[] = $row2['name'];
+                                        }
+
+                                        $c = count($name);
+                                        for ($i = 0; $i < $c; $i++) {
+                                            $sql3 = "select COUNT(atten) as coun,name,stud_id,sec,course,semester,atten,sub,date from attendence where name='$name[$i]' AND atten='p' ";
+                                            $result3 = mysqli_query($con, $sql3);
+                                            $row3 = mysqli_fetch_array($result3);
+                                            $ca[$i] = $row3['coun'];
+                                            // echo $ca[$i] . "<br>";
+                                            $sql4 = "select count(DISTINCT(date)) as dat from attendence ";
+                                            $result4 = mysqli_query($con, $sql4);
+                                            $row4 = mysqli_fetch_array($result4);
+                                            $cat[$i] = $row4['dat'];
+                                            // echo $cat[$i] . "<br>";
+                                            $per[$i] =  $ca[$i] / $cat[$i] * 100;
+                                            // echo $per . "<br>";
+                                        ?>
+                                            <tbody>
+                                                <tr>
+                                                    <td><?php echo $row3['stud_id'] ?></td>
+
+                                                    <td><?php echo $name[$i] ?></td>
+                                                    <td><?php echo $row3['sec'] ?></td>
+                                                    <td><?php echo $row3['course'] ?></td>
+                                                    <td><?php echo $row3['semester'] ?></td>
+
+                                                    <td><?php echo $row3['date'] ?></td>
+
+
+                                                    <td><?php echo $per[$i] . "%" ?></td>
+                                                <?php
+                                            }
+                                                ?>
+                                                </tr>
+                                            </tbody>
+                                    </table>
+
+                                    <?php
+                                    ?>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="contleft2"></div>
                         </div>
-                        <div class="car"><i class="fa-solid fa-chalkboard-user" style="font-size: 4.5vw;position:absolute;top:27%;right:5%;"></i>
-                            <h4 style="font-size: 1.4vw;position:absolute;top:10%;margin-left: 1vw;color:white;">S.Y. Students</h4>
-                            <button class="btn btn-primary" style="font-size: 3vw;position:absolute;top:26%;margin-left: 5vw;color:white;border:none;background-color:transparent;"><?php echo $sycount ?></button>
+                        <div class="contleft" style="width:30%;height:100%;">
+
+
+
+
+                            <?php
+
+                            require('connection.php');
+
+                            // if (isset($_SESSION['facultyid'])) {
+                            if (isset($_POST['search'])) {
+                                $course = $_POST['course'];
+                                $sem = $_POST['sem'];
+                                $section = $_POST['section'];
+
+
+                                $sql = "SELECT DISTINCT sub FROM attendence WHERE course='$course' AND semester='$sem' AND sec='$section'";
+                                $result = mysqli_query($con, $sql);
+                                $count = mysqli_num_rows($result);
+                            ?>
+                                <div>
+                                    <div class="frm" style="position:absolute;top:32%;left:55%">
+                                        <form method="post">
+                                            <?php
+                                            if ($count > 0) {
+                                            ?>
+                                                <label for="" style="font-size:1.5vw;">Subject</label>
+                                                <select name="sub" id="" class="">
+                                                    <?php
+
+                                                    while ($row = mysqli_fetch_array($result)) {
+                                                    ?>
+                                                        <option value="<?php echo $row['sub'] ?>"><?php echo $row['sub'] ?></option>
+                                                    <?php
+                                                    }
+
+                                                    ?>
+                                                </select>
+
+                                                <input type="text" name="stud_id" placeholder="Enter Student Id" class="" />
+                                                <input type="submit" value="Submit" name="submit" class="btn btn-primary" />
+                                            <?php
+                                            } else {
+                                                echo "<script>alert('no data found')</script>";
+                                            }
+                                            ?>
+                                        </form>
+                                    </div>
+
+                                    <?php
+                                }
+                                if (isset($_POST['submit'])) {
+
+                                    $sub = $_POST['sub'];
+                                    $studid = $_POST['stud_id'];
+                                    $sql2 = "SELECT COUNT(atten) AS count FROM attendence WHERE sub='$sub' AND stud_id='$studid' AND atten='p'";
+                                    $result2 = mysqli_query($con, $sql2);
+
+
+
+                                    if ($result2) {
+                                        $row2 = mysqli_fetch_assoc($result2);
+                                        $count2 = $row2['count'];
+                                    ?>
+                                        <div style="top:30%;position:absolute;left:78%">
+                                            <?php echo "Total Present: $count2"; ?>
+                                        </div>
+                                    <?php
+                                    } else {
+                                        echo "Error in executing SQL: " . mysqli_error($con);
+                                    }
+
+                                    $sql3 = "SELECT COUNT(atten) AS count FROM attendence WHERE sub='$sub' AND stud_id='$studid'";
+                                    $result3 = mysqli_query($con, $sql3);
+
+                                    if ($result3) {
+                                        $row3 = mysqli_fetch_assoc($result3);
+                                        $count3 = $row3['count'];
+                                    ?>
+                                        <div style="top:30%;position:absolute;left:87%">
+                                            <?php echo "Total Lectures: $count3"; ?>
+                                        </div>
+                                    <?php
+                                    } else {
+                                        echo "Error in executing SQL: " . mysqli_error($con);
+                                    }
+
+
+                                    ?>
+                                    <div>
+                                        <div style="top:35%;position:absolute;left:82%">
+                                            <?php
+                                            $present = $count2 / $count3 * 100;
+                                            echo "<br/>Present Rate is : $present %";
+                                            ?></div>
+
+                                        <div style="width:200px;height:200px;top:43%;position:absolute;left:80%">
+                                            <canvas id='myPieChart' width='200' height='200'></canvas>
+                                        </div>
+                                    </div>
+                                <?php
+                                }
+
+                                ?>
+                                </div>
                         </div>
-                        <div class="car"><i class="fa-solid fa-chalkboard-user" style="font-size: 4.5vw;position:absolute;top:27%;right:5%;"></i>
-                            <h4 style="font-size: 1.4vw;position:absolute;top:10%;margin-left: 1vw;color:white;">T.Y. Students</h4>
-                            <button style="font-size: 3vw;position:absolute;top:33%;margin-left: 5vw;color:white;border:none;background-color:transparent;"><?php echo $tycount ?></button>
-                        </div>
-
-                    </div>
-
-                    <div class="contents">
-
                     </div>
                 </div>
             </div>
@@ -520,7 +691,50 @@ if (($_SESSION['id']) == true) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <script>
+            var ctx = document.getElementById('myPieChart').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Present', 'Absent'],
+                    datasets: [{
+                        label: 'Attendance',
+                        data: [<?php echo $present; ?>, <?php echo 100 - $present; ?>],
+                        backgroundColor: [
+                            '#66fcf1',
+                            '#c5c6c7',
+                        ],
+                        borderColor: [
+                            '#66fcf1',
+                            '#c5c6c7',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: 'Attendance Percentage'
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                                    return previousValue + currentValue;
+                                });
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                return percentage + "%";
+                            }
+                        }
+                    }
+                }
+            });
             var student = document.querySelector(".student");
             var dropdown = document.querySelector(".dropdown");
             var arrow1 = document.querySelector(".arrow1");

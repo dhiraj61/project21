@@ -341,10 +341,19 @@ if (($_SESSION['id']) == true) {
                         $row = mysqli_fetch_assoc($result);
 
                         ?>
-                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;">
+                        <button type="button" class="circular-button" data-toggle="modal" data-target="#studentProfileModal" style="position:absolute;top:2vh;border-radius:3vw;margin-right:2vw">
                             <img src="<?php echo $row['img'] ?>" alt="Faculty Profile Image" style="width:50px;height:50px;border-radius:50%">
                         </button>
+                        <form action="" method="post">
 
+                            <input type="submit" name="logout" value="Logout" class="btn btn-danger" style="background-color:red;position:absolute;right:3px;top:2.6vh;width:5vw;font-size:1vw;text-align:center;">
+                        </form>
+                        <?php
+                        if (isset($_POST['logout'])) {
+                            session_unset();
+                            echo "<script>window.open('faclogin.php','_self')</script>";
+                        }
+                        ?>
                         <div class="modal fade" id="studentProfileModal" tabindex="-1" role="dialog" aria-labelledby="studentProfileModalLabel" aria-hidden="true" data-backdrop="false">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -569,51 +578,55 @@ if (($_SESSION['id']) == true) {
 
                                                         $sel = "SELECT * FROM students WHERE course='$course' AND semester='$semester' AND sec='$sec'";
                                                         $result = mysqli_query($con, $sel);
-                                                        while ($row = mysqli_fetch_array($result)) {
+                                                        $count = mysqli_num_rows($result);
+                                                        if ($count > 0) {
+                                                            while ($row = mysqli_fetch_array($result)) {
                                                     ?>
-                                                            <tr>
-                                                                <td><input style="width:100px" type="text" value="<?php echo $row['student_id'] ?>" name="id_<?php echo $row['student_id']; ?>" readonly></td>
-                                                                <td><input style="width:230px" type="text" value="<?php echo $row['name'] ?>" name="name_<?php echo $row['student_id']; ?>" readonly></td>
-                                                                <td><input style="width:30px" type="text" value="<?php echo $row['sec'] ?>" name="sec_<?php echo $row['student_id']; ?>" readonly></td>
-                                                                <td><input style="width:50px" type="text" value="<?php echo $row['course'] ?>" name="course_<?php echo $row['student_id']; ?>" readonly></td>
-                                                                <td><input style="width:50px" type="text" value="<?php echo $row['semester'] ?>" name="semester_<?php echo $row['student_id']; ?>" readonly></td>
-                                                                <td>
-                                                                    <input type="checkbox" name="p_<?php echo $row['student_id']; ?>" value="p"> P
-                                                                    <input type="checkbox" name="p_<?php echo $row['student_id']; ?>" value="A"> A
-                                                                </td>
-                                                            </tr>
-                                                    <?php
+                                                                <tr>
+                                                                    <td><input style="width:100px" type="text" value="<?php echo $row['student_id'] ?>" name="id_<?php echo $row['student_id']; ?>" readonly></td>
+                                                                    <td><input style="width:230px" type="text" value="<?php echo $row['name'] ?>" name="name_<?php echo $row['student_id']; ?>" readonly></td>
+                                                                    <td><input style="width:30px" type="text" value="<?php echo $row['sec'] ?>" name="sec_<?php echo $row['student_id']; ?>" readonly></td>
+                                                                    <td><input style="width:50px" type="text" value="<?php echo $row['course'] ?>" name="course_<?php echo $row['student_id']; ?>" readonly></td>
+                                                                    <td><input style="width:50px" type="text" value="<?php echo $row['semester'] ?>" name="semester_<?php echo $row['student_id']; ?>" readonly></td>
+                                                                    <td>
+                                                                        <input type="checkbox" name="p_<?php echo $row['student_id']; ?>" value="p"> P
+                                                                        <input type="checkbox" name="p_<?php echo $row['student_id']; ?>" value="A"> A
+                                                                    </td>
+                                                                </tr>
+                                                        <?php
+                                                            }
+                                                        } else {
+                                                            echo "<script>alert('No data');</script>";
                                                         }
-                                                    }
-                                                    ?>
+                                                        ?>
                                                 </tbody>
                                             </table>
 
                                             <input type="submit" name="submit" value="Attendance Submit" class="btn btn-primary">
 
                                             <?php
-                                            if (isset($_POST['submit'])) {
-                                                require('connection.php');
-                                                foreach ($_POST as $key => $value) {
-                                                    if (strpos($key, 'id_') === 0) {
-                                                        $student_id = substr($key, 3); // Extract student ID from the input name
-                                                        $name = $POST["name$student_id"];
-                                                        $sec = $POST["sec$student_id"];
-                                                        $course = $POST["course$student_id"];
-                                                        $semester = $POST["semester$student_id"];
-                                                        $status = $POST["p$student_id"];
-                                                        $sub = $_POST['subject'];
-                                                        $date = $_POST['date'];
-                                                        $sql = "INSERT INTO attendence VALUES('$student_id', '$name', '$sec', '$course', '$semester', '$status','$sub','$date')";
-                                                        $result = mysqli_query($con, $sql);
-                                                        if ($result) {
-                                                            echo "<script>alert('inserted');</script>";
-                                                        } else {
-                                                            echo "Error: " . $sql . "<br>" . mysqli_error($con);
+                                                        if (isset($_POST['submit'])) {
+                                                            require('connection.php');
+                                                            foreach ($_POST as $key => $value) {
+                                                                if (strpos($key, 'id_') === 0) {
+                                                                    $student_id = substr($key, 3); // Extract student ID from the input name
+                                                                    $name = $_POST["name_$student_id"];
+                                                                    $sec = $_POST["sec_$student_id"];
+                                                                    $course = $_POST["course_$student_id"];
+                                                                    $semester = $_POST["semester_$student_id"];
+                                                                    $status = $_POST["p_$student_id"];
+                                                                    $sub = $_POST['subject'];
+                                                                    $date = $_POST['date'];
+                                                                    $sql = "INSERT INTO attendence VALUES('$student_id', '$name', '$sec', '$course', '$semester', '$status','$sub','$date')";
+                                                                    $result = mysqli_query($con, $sql);
+                                                                    if ($result) {
+                                                                        echo "<script>alert('inserted');</script>";
+                                                                    } else {
+                                                                        echo "Error: " . $sql . "<br>" . mysqli_error($con);
+                                                                    }
+                                                                }
+                                                            }
                                                         }
-                                                    }
-                                                }
-                                            }
                                             ?>
 
                                         </div>
@@ -621,9 +634,7 @@ if (($_SESSION['id']) == true) {
                             </div>
                         </div>
                     <?php
-                } else {
-                    echo "<script>window.open('faclogin.php','_self')</script>";
-                }
+                                                    }
                     ?>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
                     <!-- Font Awesome JS -->
@@ -687,3 +698,8 @@ if (($_SESSION['id']) == true) {
     </body>
 
     </html>
+<?php
+} else {
+    echo "<script>window.open('faclogin.php','_self')</script>";
+}
+?>
